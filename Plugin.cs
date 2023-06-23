@@ -32,6 +32,7 @@ namespace GorillaTagModTemplateProject
 			/* Code here runs at the start and whenever your mod is enabled*/
 
 			HarmonyPatches.ApplyHarmonyPatches();
+			cube.SetActive(true);
 		}
 
 		void OnDisable()
@@ -41,6 +42,7 @@ namespace GorillaTagModTemplateProject
 			/* Code here runs whenever your mod is disabled (including if it disabled on startup)*/
 
 			HarmonyPatches.RemoveHarmonyPatches();
+			cube.SetActive(false);
 		}
 
 		void OnGameInitialized(object sender, EventArgs e)
@@ -48,21 +50,21 @@ namespace GorillaTagModTemplateProject
 			/* Code here runs after the game initializes (i.e. GorillaLocomotion.Player.Instance != null) */
 			// creates cube
 			cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			// set the parent of the cube to the hand
+			cube.transform.SetParent(GorillaLocomotion.Player.Instance.rightHandFollower.transform, false);
 			// disable collider
 			cube.GetComponent<BoxCollider>().enabled = false;
+			// changes color
+			cube.GetComponent<MeshRenderer>().material.color = Color.blue;
 			// change size
 			cube.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
 			// change the floats to change cube position
 			cube.transform.localPosition = new Vector3(-0.055f, 0.0004f, -0.01f);
-			// set the parent of the cube to the hand
-			cube.transform.SetParent(GorillaLocomotion.Player.Instance.rightHandFollower.transform, false);
 		}
 
 		void Update()
 		{
 			/* Code here runs every frame when the mod is enabled */
-			// changes color
-			cube.GetComponent<MeshRenderer>().material.color = Color.blue;
 		}
 
 		/* This attribute tells Utilla to call this method when a modded room is joined */
